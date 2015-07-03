@@ -1,0 +1,27 @@
+*** Settings ***
+
+Resource  resource.txt
+
+Test Setup  Enter SmartClient Page
+Test TearDown  Close Browser
+
+*** Test Cases ***
+
+Checking Calculations	[Template]  Can Perform Calculations 
+   "1 + 1"		2
+   "A mess here"	Error
+
+*** Keywords ***
+Enter SmartClient Page
+    Open Browser  ${BASE_URL}  ${BROWSER}
+
+Can Perform Calculations	[Arguments]	${formula}	${expectedResult}
+	sleep	0.3
+	Execute Javascript	formula.setValue(${formula})
+	sleep	0.3
+	Execute Javascript	calc.click(queryForm)
+	sleep	0.3
+	${actualResult}=	Execute Javascript	return answer.getValue()
+	sleep	0.3
+	Should Be Equal As Strings	${actualResult}	${expectedResult}
+	sleep	0.3

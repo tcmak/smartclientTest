@@ -1,0 +1,21 @@
+*** Settings ***
+
+Resource  resource.txt
+
+Test Setup  Enter SmartClient Page
+Test TearDown  Close Browser
+
+*** Test Cases ***
+
+Just Open and Close
+    sleep  1
+    Execute Javascript  isc_IButton_0.click()
+    ${buttonName}=      Execute Javascript  return isc_IButton_0.title
+    Should Be Equal     ${buttonName}       Hello
+    Execute Javascript  isc.dismissCurrentDialog()
+    sleep  1
+
+*** Keywords ***
+Enter SmartClient Page
+    Open Browser  ${BASE_URL}  ${BROWSER}
+
